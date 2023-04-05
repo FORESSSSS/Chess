@@ -15,37 +15,26 @@ public class King extends ChessPiece {
 
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-
-        if (toLine == line && toColumn == column + 1 && checkCage(toLine, toColumn)) {
-            return true;
-        } else if (toLine == line && toColumn == column - 1 && checkCage(toLine, toColumn)) {
-            return true;
-        } else if (toColumn == column && toLine == line + 1 && checkCage(toLine, toColumn)) {
-            return true;
-        } else if (toColumn == column && toLine == line - 1 && checkCage(toLine, toColumn)) {
-            return true;
-        } else if (toLine == line + 1 && toColumn == column + 1 && checkCage(toLine, toColumn)) {
-            return true;
-        } else if (toLine == line + 1 && toColumn == column - 1 && checkCage(toLine, toColumn)) {
-            return true;
-        } else if (toLine == line - 1 && toColumn == column + 1 && checkCage(toLine, toColumn)) {
-            return true;
-        } else if (toLine == line - 1 && toColumn == column - 1 && checkCage(toLine, toColumn)) {
-            return true;
-        } else if (toColumn == column && toLine == line) {
-            return false;
-        } else {
-            return false;
+        if (Math.abs(line - toLine) <= 1 && Math.abs(column - toColumn) <= 1 && !isUnderAttack(chessBoard, toLine, toColumn)
+                && (chessBoard.board[toLine][toColumn] == null || !color.equals(chessBoard.board[toLine][toColumn].getColor()))) {
+            if (checkCage(toLine, toColumn) && checkPosition(line, column, toLine, toColumn)
+                    && (Math.abs(line - toLine) == Math.abs(column - toColumn))) {
+                return true;
+            } else if (checkCage(toLine, toColumn) && ((line == toLine && column != toColumn) || (line != toLine && column == toColumn))) {
+                return true;
+            } else {
+                return false;
+            }
         }
+        return false;
     }
 
-    public boolean isUnderAttack(ChessBoard board, int line, int column) {
+    public boolean isUnderAttack(ChessBoard chessBoard, int line, int column) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (board.board[i][j] != null) {
-                    if (!board.board[i][j].getColor().equals(color) && board.board[i][j].canMoveToPosition(board, i, j, line, column)) {
-                        return true;
-                    }
+                if (chessBoard.board[i][j] != null && !color.equals(chessBoard.board[i][j].getColor())
+                        && chessBoard.board[i][j].canMoveToPosition(chessBoard, i, j, line, column)) {
+                    return true;
                 }
             }
         }
