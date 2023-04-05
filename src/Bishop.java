@@ -16,6 +16,7 @@ public class Bishop extends ChessPiece {
 
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
+
         for (int i = 1; i <= 7; i++) {
             if (toLine == line + i && toColumn == column + i && checkCage(toLine, toColumn)) {
                 return true;

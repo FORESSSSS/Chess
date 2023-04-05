@@ -15,6 +15,7 @@ public class Queen extends ChessPiece {
 
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
+
         for (int i = 1; i <= 7; i++) {
             if (toLine == line && toColumn == column + i && checkCage(toLine, toColumn)) {
                 return true;

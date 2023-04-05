@@ -19,4 +19,12 @@ public abstract class ChessPiece {
             return false;
         }
     }
+
+    public boolean checkPosition(int line, int column, int toLine, int toColumn) {
+        if (line != toLine && column != toColumn) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
