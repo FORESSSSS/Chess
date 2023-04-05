@@ -15,51 +15,33 @@ public class Pawn extends ChessPiece {
 
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-
-        if (color.equals("White") && toColumn == column && toLine == line + 1 && checkCage(toLine, toColumn)) {
-            return true;
-        } else if (color.equals("White") && toColumn == column && toLine == line + twoWhite(line) && checkCage(toLine, toColumn)) {
-            return true;
-        } else if (color.equals("Black") && toColumn == column && toLine == line - 1 && checkCage(toLine, toColumn)) {
-            return true;
-        } else if (color.equals("Black") && toColumn == column && toLine == line - twoBlack(line) && checkCage(toLine, toColumn)) {
-            return true;
-        } else if (toColumn == column && toLine == line) {
-            return false;
-        } else {
-            return false;
+        if ((line != toLine && column == toColumn) && checkCage(toLine, toColumn)) {
+            if (color.equals("White")) {
+                if ((line == 1 && toLine - line == 2) && chessBoard.board[line + 1][column] == null
+                        && chessBoard.board[toLine][toColumn] == null) {
+                    return true;
+                } else if (toLine - line == 1 && chessBoard.board[toLine][toColumn] == null) {
+                    return true;
+                }
+            } else {
+                if ((line == 6 && line - toLine == 2) || line - toLine == 1 && chessBoard.board[line - 1][column] == null
+                        && chessBoard.board[toLine][toColumn] == null) {
+                    return true;
+                } else if (toLine - line == 1 && chessBoard.board[toLine][toColumn] == null) {
+                    return true;
+                }
+            }
+        } else if (Math.abs(line - toLine) == 1 && Math.abs(column - toColumn) == 1) {
+            if (color.equals("White")) {
+                if (toLine - line == 1 && (chessBoard.board[toLine][toColumn] != null && !color.equals(chessBoard.board[toLine][toColumn].getColor()))) {
+                    return true;
+                }
+            } else {
+                if (line - toLine == 1 && (chessBoard.board[toLine][toColumn] != null && !color.equals(chessBoard.board[toLine][toColumn].getColor()))) {
+                    return true;
+                }
+            }
         }
-    }
-
-    public int twoWhite(int line) {
-        if (isLineOne(line)) {
-            return 2;
-        } else {
-            return 1;
-        }
-    }
-
-    public int twoBlack(int line) {
-        if (isLineSix(line)) {
-            return 2;
-        } else {
-            return 1;
-        }
-    }
-
-    public boolean isLineOne(int line) {
-        if (line == 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean isLineSix(int line) {
-        if (line == 6) {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 }
